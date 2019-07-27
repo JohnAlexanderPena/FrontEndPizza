@@ -1,0 +1,55 @@
+ .maincontainer {
+  display: flex;
+  flex-direction: row;
+}
+
+
+body {
+  background-color: lightblue;
+}
+
+li {
+  background-color: #0066ff;
+  font-family: verdana;
+  border: 1px solid;
+  border-color: "black";
+  font-size: 20px;
+  width: 450px;
+}
+
+.pizzacontainer {
+  width: 451px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/*
+#header {
+    width: 100%;
+    background-color: red;
+    height: 30px;
+}
+
+#container {
+    width: 300px;
+    background-color: #blue;
+    margin: auto;
+}
+#first {
+    width: 100px;
+    float: left;
+    height: 300px;
+        background-color: blue;
+}
+#second {
+    width: 200px;
+    float: right;
+    height: 300px;
+    background-color: green;
+}
+#clear {
+    clear: both;
+} */
