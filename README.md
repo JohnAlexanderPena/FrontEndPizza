@@ -67,10 +67,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 # pizzafront-end
-# pizzafront-end
-# frontendpizza
-# pizza-front
-# FinalPizzaFrontEnd
-# FrontEndPizza
-# FrontEndPizza
-# FrontEndPizza
+
