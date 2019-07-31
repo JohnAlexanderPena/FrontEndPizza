@@ -12,7 +12,7 @@ class Login extends React.Component {
 
     return (
       <div style={style}>
-      <h1>Welcome! Please Sign In</h1>
+      <h1>Welcome to Dollar Pizza Finder! Please Sign In</h1>
     <form action="">
       <input onChange={this.props.handleNameInput} name="username" type="text" value={this.props.username} placeholder="Enter Username"/><br/>
       <button onClick={this.props.handleLogin}>Login</button>

@@ -20,6 +20,7 @@ class NewReview extends React.Component {
         user_id: 1
       })
     })
+    .then(this.props.getNewReviews)
   }
 
   handleClick = (event) => {

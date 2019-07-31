@@ -9,8 +9,7 @@ import React from 'react';
 
       return (
         <form style={style}>
-          <input type="text" value={props.searchTerm} onChange={props.handleChange} />
-          <button onClick={props.handleSearch}>Search</button>
+          <input type="text" placeholder="Search for Dollar Pizzas" value={props.searchTerm} onChange={props.handleChange} />
         </form>
       );
     }

@@ -31,8 +31,15 @@ class Reviews extends React.Component {
         content: this.state.review
       })
     })
-    .then(this.props.handleReviewEdit)
+    .then(fetch('http://localhost:3000/reviews')
+    .then(res => res.json())
+    .then(reviews => {
+      this.setState({
+        reviews: reviews
+      })
+    }))
   }
+
 
 
   render(){

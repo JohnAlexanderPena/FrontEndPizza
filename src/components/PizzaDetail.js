@@ -37,6 +37,15 @@ removeReview = (event, reviewObj) => {
   })
 }
 
+getNewReviews = () => {
+  fetch('http://localhost:3000/reviews')
+  .then(res => res.json())
+  .then(reviews => {
+    this.setState({
+      reviews: reviews
+    })
+  })
+}
 
 render(){
   let filteredReviews = this.state.reviews.filter(review => review.pizzaplace_id === this.props.pizzaplace.id)
@@ -49,7 +58,7 @@ render(){
     <p><strong>Average Rating:</strong> {this.props.pizzaplace.average_rating}</p>
     <p><strong>Reviews:</strong></p><br/>
     {filteredReviews.map(review => <Reviews removeReview={this.removeReview} key={review.id} handleReviewEdit={this.props.handleReviewEdit} review={review} pizzaplace={this.props.pizzaplace}/>)}
-    <NewReview handleReviewEdit={this.props.handleReviewEdit} pizzaplace={this.props.pizzaplace}/>
+    <NewReview getNewReviews={this.getNewReviews} handleReviewEdit={this.props.handleReviewEdit} pizzaplace={this.props.pizzaplace}/>
   </div>
 
   )
