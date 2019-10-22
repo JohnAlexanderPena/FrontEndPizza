@@ -1,11 +1,16 @@
 import React from 'react'
 
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+
+
 class NewPizzaPlace  extends React.Component{
 
 state = {
     address: "",
     name: "",
     zipcode: undefined,
+    long: 0,
+    lat: 0,
 }
 
 
@@ -14,6 +19,33 @@ handleChange = (event) => {
       [event.target.name]: event.target.value
   })
 }
+
+handleSubmit = (event, place) => {
+event.preventDefault();
+fetch('http://localhost:3000/pizzaplaces' , {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(place)
+})
+.then(resp => resp.json())
+.then(pizzaplace => {
+  let resp = pizzaplace.address.split(" ").join("+")
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${resp}&key=${API_KEY}`)
+  .then(resp => resp.json())
+  .then(response => {
+    pizzaplace.long = response.results[0].geometry.location.lng
+    pizzaplace.lat = response.results[0].geometry.location.lat
+  }).then(
+  this.setState(prevState =>({
+    pizzaplaces: [...prevState.pizzaplaces, pizzaplace]
+    }))
+    )
+  })
+}
+
 
 newHandleSubmit = (event) => {
   event.preventDefault()

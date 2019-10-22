@@ -9,7 +9,8 @@ import React from 'react';
 
       return (
         <form style={style}>
-          <input type="text" placeholder="Search for Dollar Pizzas" value={props.searchTerm} onChange={props.handleChange} />
+          <input type="text" placeholder="Search for Dollar Pizzas" value={props.searchTerm} />
+          <button onClick={props.handleChange}>Find me CHEAP PIZZA!</button>
         </form>
       );
     }

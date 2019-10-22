@@ -6,16 +6,16 @@ import NewPizzaPlace from '../components/NewPizzaPlace'
 import PizzaDetail from '../components/PizzaDetail'
 
 
-const mapStyles = {
-
-  width: '50%',
-  height: '50%',
-  position: "absolute",
-  top: "16px",
-  left: "500px",
-  border: "3px solid #73AD21",
-  overflow: "auto:",
-};
+// const mapStyles = {
+//
+//   width: '50%',
+//   height: '50%',
+//   position: "absolute",
+//   top: "16px",
+//   left: "500px",
+//   border: "3px solid #73AD21",
+//   overflow: "auto:",
+// };
 
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
@@ -157,7 +157,7 @@ export class MapContainer extends Component {
           <Map
                   google={this.props.google}
                   zoom={14}
-                  style={mapStyles}
+                  
                   initialCenter={{
                    lat: this.state.lat,
                    lng: this.state.long
@@ -199,6 +199,7 @@ export class MapContainer extends Component {
               zoom={14}
               style={mapStyles}
               initialCenter={{
+
                lat: this.state.lat,
                lng: this.state.long
               }}
@@ -216,7 +217,7 @@ export class MapContainer extends Component {
                   key={pizzaplace.id}
                 />
                 })
-              }
+              }je
               <InfoWindow
                 marker={this.state.activeMarker}
                 visible={this.state.showingInfoWindow}
