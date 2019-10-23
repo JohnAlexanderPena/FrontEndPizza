@@ -5,7 +5,7 @@
 
 
 body {
-  background-color: lightblue;
+  background-color: #304ffe;
 }
 
 li {
@@ -16,7 +16,7 @@ li {
   font-size: 20px;
   width: 450px;
 }
-
+/*
 .pizzacontainer {
   width: 451px;
   display: flex;
@@ -24,7 +24,7 @@ li {
   flex-direction: column;
   align-items: center;
   z-index: 1;
-}
+} */
 
 /*
 #header {

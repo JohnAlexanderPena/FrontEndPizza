@@ -1,7 +1,7 @@
 import React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+// import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 // import TextField from '@material-ui/core/TextField';
@@ -55,6 +55,7 @@ import Button from '@material-ui/core/Button';
   }
 
 render() {
+  console.log(this.state.username)
   return (
     <div>
       <FormControl >
@@ -71,7 +72,7 @@ render() {
       </FormControl>
       <br/>
       <br/>
-      <Button onClick={() => this.props.LoginButton(this.state.username)}variant="contained" color="primary">
+      <Button onClick={() => this.props.LoginButton(this.state.username)}variant="contained" color= 'primary'>
         Login
       </Button>
       <br/>

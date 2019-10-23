@@ -4,13 +4,10 @@ import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react'
 
 const mapStyles = {
 
+  float:"right",
   width: '50%',
-  height: '50%',
-  position: "absolute",
-  top: "16px",
-  left: "500px",
-  border: "3px solid #73AD21",
-  overflow: "auto:",
+  height: '100%',
+  background: '#0130A0',
 };
 
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -18,54 +15,27 @@ const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 export class GoogleMap extends Component {
 
   state = {
-    pizzaplaces: [],
     searchTerm: "",
-    showingInfoWindow: false,  //Hides or the shows the infoWindow
+    showingInfoWindow: this.props.showInfoWindow,  //Hides or the shows the infoWindow
     clicked: false,     //Shows the infoWindow to the selected place upon a marker         //Shows the infoWindow to the selected place upon a marker
     activeMarker: {},          //Shows the active marker upon click
     selectedPlace: {},
-    long: -73.987448000,
-    lat: 40.700885000,
+    long: this.props.long,
+    lat: this.props.lat,
     newForm: false,
-    selectedPizzaPlace: {},
+    allPizzaPlaces: [...this.props.pizzaplaces],
+    pizzaplaces: this.props.pizzaplaces,
   };
-  //
-  // handlePizzaClick = (event, pizzaplace) =>
-  // {
-  //   this.setState({
-  //     selectedPizzaPlace: pizzaplace,
-  //     clicked: true,
-  //     lat: pizzaplace.lat,
-  //     lng: pizzaplace.long,
-  //   })
-  // }
-
-  //
-  // handleChange = (event) => {
-  //   this.setState({
-  //     searchTerm: event.target.value
-  //   })
-  //
-  //   event.preventDefault();
-    // const desiredPizzaplaces = this.state.pizzaplaces.filter(p =>
-    // p.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
-
-  //   if(desiredPizzaplaces !== this.state.searchTerm){
-  //     return null
-  //   } else {
-  //   this.setState({
-  //     long: desiredPizzaplaces[0].long,
-  //     lat: desiredPizzaplaces[0].lat
-  //     })
-  //   }
-  // }
 
   onMarkerClick = (props, marker, e) =>
       this.setState({
-        selectedPlace: props,
+        long: props.position.lng,
+        lat: props.position.lat,
+        selectedPlace: props || this.props.chosenPizza.join(''),
         activeMarker: marker,
         showingInfoWindow: true
-      });
+      }
+);
 
   onClose = props => {
     if (this.state.showingInfoWindow) {
@@ -75,7 +45,6 @@ export class GoogleMap extends Component {
       });
     }
   };
-
 
   // handleSubmit = (event, place) => {
   // event.preventDefault();
@@ -106,17 +75,15 @@ export class GoogleMap extends Component {
   //   }))
   // }
 
-  handleReviewEdit = (event) => {
-   this.setState({
-     clicked: false
-   })
- }
-
-
   render() {
-    const desiredPizzaplaces = this.state.pizzaplaces.filter(p =>
-    p.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+    // const desiredPizzaplaces = this.state.pizzaplaces.filter(p =>
+    // p.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+    // console.log(desiredPizzaplaces)
+    //   const onlyPizza = this.props.pizzaplaces.filter(p =>
+    const onlyPizza = this.state.allPizzaPlaces.filter(p =>
+    p.name.toLowerCase().includes(this.props.searchTerm))
 
+    console.log(this.props.searchTerm, this.state.allPizzaPlaces, onlyPizza)
     return <Map
                   google={this.props.google}
                   zoom={14}
@@ -126,11 +93,12 @@ export class GoogleMap extends Component {
                    lng: this.state.long
                   }}
                   center={{
-                    lat: this.state.lat,
-                    lng: this.state.long,
+                    lat: this.props.lat || this.props[0].lat,
+                    lng: this.props.long || this.props[0].lng,
                   }}
                   >
-                  {desiredPizzaplaces.map(pizzaplace =>{
+
+                  {this.props.pizzaplaces.map(pizzaplace =>{
                   return <Marker
                       position={{lat: pizzaplace.lat, lng: pizzaplace.long}}
                       onClick={this.onMarkerClick}

@@ -7,12 +7,11 @@ import PizzaDetail from '../components/PizzaDetail'
 
 
 const mapStyles = {
-
   width: '50%',
   height: '50%',
   position: "absolute",
   top: "16px",
-  left: "500px",
+  left: "0px",
   border: "3px solid #73AD21",
   overflow: "auto:",
 };
@@ -138,7 +137,7 @@ export class MapContainer extends Component {
     p.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
 
     return (
-  <div>
+  <div style={{left:'500px'}}>
       {
 
       (this.state.newForm === false) ?
