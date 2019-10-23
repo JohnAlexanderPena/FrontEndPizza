@@ -14,7 +14,8 @@ class MainContainer extends Component {
     username: "",
     long: -73.987448000,
     lat: 40.700885000,
-    pizzaplaces: []
+    pizzaplaces: [],
+    users: []
   }
 
   componentDidMount(){
@@ -25,23 +26,30 @@ class MainContainer extends Component {
         pizzaplaces: pizzaplaces
       })
     })
+    .then(fetch('http://localhost:3000/users')
+    .then( resp => resp.json())
+    .then( users => {
+      this.setState({
+        users : users
+      })
+    })
+   )
   }
 
-  handleLogin = (event) => {
-    event.preventDefault()
-    if(!this.state.loggedIn) {
-      fetch('http://localhost:3000/users')
-      .then(resp => resp.json())
-      .then(users => {
-        users.forEach(user => {
-          if (user.username === this.state.username) {
+      handleLoginButton = (name) => {
+        if (name.length <= 0) {
+            alert('Invalid Username')
+        } else {
+        this.state.users.forEach( user => {
+          if (user.username === name) {
             this.setState({
+              username: user.username,
               loggedIn: true
-              })
-            }
-          })
+            })
+          }
         })
-      }}
+      }
+    }
 
       // handlePizzaClick = (event, pizzaplace) =>
       // {
@@ -81,11 +89,13 @@ class MainContainer extends Component {
   }
 
   render() {
+    console.log(this.state.username)
     return (
-       <div>
+       <div style={{ textAlign: 'center', postition: 'center'}}>
+         <h1>Welcome To Dollar Pizza Finder!</h1>
         {
           (this.state.loggedIn === false) ?
-            <Login handleLogin={this.handleLogin} handleNameInput={this.handleNameInput} username={this.state.username}/>
+            <Login LoginButton={this.handleLoginButton} handleNameInput={this.handleNameInput} />
             :
             <div>
             <Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.handleSearch}/>
