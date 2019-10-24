@@ -22,7 +22,6 @@ export default function PizzaContainer(props) {
 
   const selectedPizzaPlace = props.pizzaplaces.filter(p =>
     p.name.toLowerCase().includes(props.searchTerm));
-  console.log(props.pizzaplaces, selectedPizzaPlace, "Inside PIZZA CONTIANER")
   return (
     <div className={classes.root}>
         {selectedPizzaPlace.map((pizzaplace, index) => {
