@@ -16,40 +16,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// function Row(props) {
-//   const { index, style } = props;
-//
-//   return (
-//     <ListItem button style={style} key={index}>
-//       <ListItemText primary={`Item ${index + 1}`} />
-//     </ListItem>
-//   );
-// }
-//
-// Row.propTypes = {
-//   index: PropTypes.number.isRequired,
-//   style: PropTypes.object.isRequired,
-// };
 
 export default function PizzaContainer(props) {
   const classes = useStyles();
 
+  const selectedPizzaPlace = props.pizzaplaces.filter(p =>
+    p.name.toLowerCase().includes(props.searchTerm));
+  console.log(props.pizzaplaces, selectedPizzaPlace, "Inside PIZZA CONTIANER")
   return (
     <div className={classes.root}>
-        {props.pizzaplaces.map((pizzaplace, index) => {
+        {selectedPizzaPlace.map((pizzaplace, index) => {
           return <ListItem button key={index + pizzaplace}>
           <ListItemText onClick={(event) => props.handlePizzaClick(pizzaplace) } primary={`${pizzaplace.name} located at:  ${pizzaplace.address}`} />
         </ListItem> })}
     </div>
   );
 }
-
-  //
-  //   return(
-  //     props.pizzaplaces.map(pizzaplace => {
-  //       return <Pizza pizzaplace={pizzaplace} key={pizzaplace.id} handlePizzaClick={this.props.handlePizzaClick}/>
-  //     })
-  //   )
-  // }
-
-// export default PizzaContainer

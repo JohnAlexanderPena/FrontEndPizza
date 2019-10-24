@@ -64,14 +64,58 @@ handlePizzaClick = (event) => { //handle side pizza clicks
 
 handleChange = (event) => {
   event.preventDefault() // handle search form input
-  const selectedPizzaPlace = this.state.pizzaplaces.filter(p =>
-  p.name.toLowerCase().includes(event.target.value.toLowerCase()))
-  this.setState({
-    lat: selectedPizzaPlace[0].lat,
-    long: selectedPizzaPlace[0].long,
-    pizzaplaces: selectedPizzaPlace,
-    searchTerm: event.target.value
+
+const originalPlaces = [...this.state.pizzaplaces]
+let newPlace = this.state.pizzaplaces.filter(pizzaplace => pizzaplace.name.toLowerCase().includes(event.target.value.toLowerCase()))
+
+for(let place of this.state.pizzaplaces) {
+  if (place.name.includes(newPlace[0].name)) {
+    this.setState({
+      pizzaplaces: [place],
+      searchTerm: event.target.value,
+      lat: place.lat,
+      lng: place.long
     })
+  } else {
+    this.setState({
+      pizzaplaces: originalPlaces,
+      searchTerm: event.target.value
+    })
+  }
+}
+
+  // this.setState({
+  //   pizzaplaces: filtered
+  // })
+// if (event.target.value === "") {
+//  this.setState({
+//    searchTerm: event.target.value,
+//  })
+// } else {
+//   for (let place of this.state.pizzaplaces ) {
+//     if(place.name.toLowerCase().includes(event.target.value.toLowerCase())){
+//       newPlaces.push(place)
+//       console.log(newPlaces)
+//       this.setState({
+//         pizzaplaces: newPlaces,
+//         searchTerm: event.target.value
+//       })
+//     }
+//   }
+// }
+
+  // if(selectedPizzaPlace === undefined  ) {
+  //   this.setState({
+  //     pizzaplaces: [...this.state.pizzaplaces]
+  //   })
+  // } else {
+  // this.setState({
+  //   lat: selectedPizzaPlace[0].lat,
+  //   long: selectedPizzaPlace[0].long,
+  //   pizzaplaces: selectedPizzaPlace,
+  //   searchTerm: event.target.value
+  //   })
+  // }
 }
 
 handleSearch = () => {
@@ -92,6 +136,7 @@ handleNameInput = (event) => { // handle login input
 }
 
 render() {
+  console.log(this.state.pizzaplaces)
   return (
      <div style={{ textAlign: 'center', postition: 'center'}}>
        <h1>Welcome To Dollar Pizza Finder!</h1>
@@ -104,7 +149,7 @@ render() {
           <div>
             <Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.handleSearch}/>
             <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
-            <PizzaContainer pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
+            <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
           <br/>
           </div>
       }

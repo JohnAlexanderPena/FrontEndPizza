@@ -83,7 +83,7 @@ export class GoogleMap extends Component {
     const onlyPizza = this.state.allPizzaPlaces.filter(p =>
     p.name.toLowerCase().includes(this.props.searchTerm))
 
-    console.log(this.props.searchTerm, this.state.allPizzaPlaces, onlyPizza)
+    // console.log(this.props.searchTerm, this.state.allPizzaPlaces, onlyPizza)
     return <Map
                   google={this.props.google}
                   zoom={14}
@@ -98,7 +98,7 @@ export class GoogleMap extends Component {
                   }}
                   >
 
-                  {this.props.pizzaplaces.map(pizzaplace =>{
+                  {onlyPizza.map(pizzaplace =>{
                   return <Marker
                       position={{lat: pizzaplace.lat, lng: pizzaplace.long}}
                       onClick={this.onMarkerClick}
