@@ -16,7 +16,7 @@ state = {
   lat: 40.700885000,
   pizzaplaces: [],
   users: [],
-  addPizzaClicked: false,
+  showNewPizzaForm: false,
   searchTerm: ""
 }
 
@@ -54,11 +54,14 @@ handleLoginButton = (name) => {
   }
 
 handlePizzaClick = (event) => { //handle side pizza clicks
+  const onlyPizza = this.state.pizzaplaces.filter(p =>
+  p.name.includes(event.name))
     this.setState({
       selectedPizzaPlace: event.name,
       clicked: true,
       lat: event.lat,
-      lng: event.long
+      lng: event.long,
+      // pizzaplaces: onlyPizza
     })
 }
 
@@ -89,15 +92,10 @@ for(let place of this.state.pizzaplaces) {
   }
 }
 
-handleSearch = () => {
-  window.location.reload()
-  // const selectedPizzaPlace = this.state.pizzaplaces.filter(p =>
-  // p.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
-  // this.setState({
-  //   lat: selectedPizzaPlace[0].lat,
-  //   long: selectedPizzaPlace[0].long,
-  //   pizzaplaces: selectedPizzaPlace
-  //   })
+addNewPizza = () => {
+  this.setState({
+    showNewPizzaForm: !this.state.showNewPizzaForm
+  })
 }
 
 handleNameInput = (event) => { // handle login input
@@ -107,19 +105,25 @@ handleNameInput = (event) => { // handle login input
 }
 
 render() {
+  console.log(this.state.showNewPizzaForm)
   return (
      <div style={{ textAlign: 'center', postition: 'center'}}>
        <h1>Welcome To Dollar Pizza Finder!</h1>
       {
         (this.state.loggedIn === false) ?
         <div >
-          <Login LoginButton={this.handleLoginButton} handleNameInput={this.handleNameInput} /> # fix login position
+          <Login LoginButton={this.handleLoginButton} handleNameInput={this.handleNameInput} />
         </div>
           :
           <div>
-            <Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.handleSearch}/>
-            <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
-            <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
+            { this.state.showNewPizzaForm ?
+              <NewPizzaPlace cancelForm={this.addNewPizza}/>
+              :
+              <div><Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.addNewPizza}/>
+               <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
+              <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
+              </div>
+            }
           <br/>
           </div>
       }

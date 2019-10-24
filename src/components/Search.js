@@ -15,7 +15,7 @@ const Search = (props) => {
           <input type="text" onChange={(event)=> props.handleChange(event)}  placeholder="Search for Dollar Pizzas"/>
           <br/>
             <Button onClick={props.handleSearch} variant="contained" color= 'primary'>
-              Reset
+              Add New Pizza to Database
             </Button>
         </form>
       );
