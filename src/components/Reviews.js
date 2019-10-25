@@ -1,5 +1,5 @@
 import React from 'react'
-import NewReview from './NewReview'
+// import NewReview from './NewReview'
 
 class Reviews extends React.Component {
 
@@ -43,6 +43,7 @@ class Reviews extends React.Component {
 
 
   render(){
+    console.log(this.state)
     return(
       <React.Fragment>
         <form onSubmit={this.handleSubmit}>

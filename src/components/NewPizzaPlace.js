@@ -47,7 +47,6 @@ event.preventDefault();
 
 
 render(){
-  console.log(this.state)
   return (
   <div>
     <h1>Share New Pizza Spot</h1>

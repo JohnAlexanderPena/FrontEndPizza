@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react'
 
 
@@ -7,7 +7,7 @@ const mapStyles = {
   float:"right",
   width: '50%',
   height: '100%',
-  background: '#0130A0',
+  background: '#0103B0',
 };
 
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -16,8 +16,7 @@ export class GoogleMap extends Component {
 
   state = {
     searchTerm: "",
-    showingInfoWindow: this.props.showInfoWindow,  //Hides or the shows the infoWindow
-    clicked: false,     //Shows the infoWindow to the selected place upon a marker         //Shows the infoWindow to the selected place upon a marker
+    showingInfoWindow: this.props.clicked,  //Hides or the shows the infoWindow
     activeMarker: {},          //Shows the active marker upon click
     selectedPlace: {},
     long: this.props.long,
@@ -34,8 +33,7 @@ export class GoogleMap extends Component {
         selectedPlace: props || this.props.chosenPizza.join(''),
         activeMarker: marker,
         showingInfoWindow: true
-      }
-);
+      });
 
   onClose = props => {
     if (this.state.showingInfoWindow) {
@@ -46,35 +44,6 @@ export class GoogleMap extends Component {
     }
   };
 
-  // handleSubmit = (event, place) => {
-  // event.preventDefault();
-  // fetch('http://localhost:3000/pizzaplaces' , {
-  //   method: 'POST',
-  //   headers: {
-  //     'Accept': 'application/json',
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify(place)
-  // })
-  // .then(resp => resp.json())
-  // .then(pizzaplace => {
-  //   let resp = pizzaplace.address.split(" ").join("+")
-  //   fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${resp}&key=${API_KEY}`)
-  //   .then(resp => resp.json())
-  //   .then(response => {
-  //     pizzaplace.long = response.results[0].geometry.location.lng
-  //     pizzaplace.lat = response.results[0].geometry.location.lat
-  //   }).then(
-  //   this.setState(prevState =>({
-  //     pizzaplaces: [...prevState.pizzaplaces, pizzaplace]
-  //   }))
-  // )
-  // })
-  // .then(this.setState({
-  //   newForm: !this.state.newForm
-  //   }))
-  // }
-
   render() {
     // const desiredPizzaplaces = this.state.pizzaplaces.filter(p =>
     // p.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
@@ -83,7 +52,6 @@ export class GoogleMap extends Component {
     const onlyPizza = this.state.allPizzaPlaces.filter(p =>
     p.name.toLowerCase().includes(this.props.searchTerm))
 
-    // console.log(this.props.searchTerm, this.state.allPizzaPlaces, onlyPizza)
     return <Map
                   google={this.props.google}
                   zoom={14}
@@ -93,8 +61,8 @@ export class GoogleMap extends Component {
                    lng: this.state.long
                   }}
                   center={{
-                    lat: this.props.lat || this.props[0].lat,
-                    lng: this.props.long || this.props[0].lng,
+                    lat: this.props.lat,
+                    lng: this.props.long,
                   }}
                   >
 

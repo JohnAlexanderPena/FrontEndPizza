@@ -5,7 +5,8 @@ import GoogleMap from './GoogleMap'
 import Search from '../components/Search'
 import PizzaContainer from './PizzaContainer'
 import NewPizzaPlace from '../components/NewPizzaPlace'
-import PizzaDetail from '../components/PizzaDetail'
+import Reviews from '../components/Reviews'
+// import PizzaDetail from '../components/PizzaDetail'
 
 class MainContainer extends Component {
 
@@ -17,7 +18,7 @@ state = {
   pizzaplaces: [],
   users: [],
   showNewPizzaForm: false,
-  searchTerm: ""
+  searchTerm: "",
 }
 
 componentDidMount(){
@@ -54,13 +55,11 @@ handleLoginButton = (name) => {
   }
 
 handlePizzaClick = (event) => { //handle side pizza clicks
-  const onlyPizza = this.state.pizzaplaces.filter(p =>
-  p.name.includes(event.name))
-    this.setState({
+  this.setState({
       selectedPizzaPlace: event.name,
       clicked: true,
       lat: event.lat,
-      lng: event.long,
+      long: event.long,
       // pizzaplaces: onlyPizza
     })
 }
@@ -70,7 +69,6 @@ event.preventDefault() // handle search form input
 
 const originalPlaces = [...this.state.pizzaplaces]
 let newPlace = this.state.pizzaplaces.filter(pizzaplace => pizzaplace.name.toLowerCase().includes(event.target.value.toLowerCase()))
-
 if(newPlace[0] === undefined){
   return null
 } else {
@@ -82,7 +80,8 @@ for(let place of this.state.pizzaplaces) {
       lat: place.lat,
       lng: place.long
     });
-  } else {
+  }
+  else {
     this.setState({
       pizzaplaces: originalPlaces,
       searchTerm: event.target.value
@@ -94,7 +93,8 @@ for(let place of this.state.pizzaplaces) {
 
 addNewPizza = () => {
   this.setState({
-    showNewPizzaForm: !this.state.showNewPizzaForm
+    showNewPizzaForm: !this.state.showNewPizzaForm,
+    pizzaplaces: this.state.pizzaplaces
   })
 }
 
@@ -105,7 +105,7 @@ handleNameInput = (event) => { // handle login input
 }
 
 render() {
-  console.log(this.state.showNewPizzaForm)
+  console.log(this.state.pizzaplaces)
   return (
      <div style={{ textAlign: 'center', postition: 'center'}}>
        <h1>Welcome To Dollar Pizza Finder!</h1>
@@ -120,11 +120,19 @@ render() {
               <NewPizzaPlace cancelForm={this.addNewPizza}/>
               :
               <div><Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.addNewPizza}/>
-               <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
+              <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
               <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
+              {
+                this.state.pizzaplaces.length === 1 ?
+                <div>
+                 <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
+                 <Reviews />
+                </div>
+                :
+                null
+              }
               </div>
             }
-          <br/>
           </div>
       }
   </div>

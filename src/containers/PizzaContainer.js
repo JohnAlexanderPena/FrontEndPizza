@@ -1,5 +1,5 @@
 import React from 'react'
-import Pizza from '../components/Pizza'
+// import Pizza from '../components/Pizza'
 // import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,10 +18,10 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function PizzaContainer(props) {
-  const classes = useStyles();
-
-  const selectedPizzaPlace = props.pizzaplaces.filter(p =>
+const classes = useStyles();
+const selectedPizzaPlace = props.pizzaplaces.filter(p =>
     p.name.toLowerCase().includes(props.searchTerm));
+
   return (
     <div className={classes.root}>
         {selectedPizzaPlace.map((pizzaplace, index) => {
