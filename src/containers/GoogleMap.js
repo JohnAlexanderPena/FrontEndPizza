@@ -10,7 +10,10 @@ const mapStyles = {
   background: '#0103B0',
 };
 
-const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KfEY;
+
+// const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY; //DISBALE MAPS API
+
 
 export class GoogleMap extends Component {
 

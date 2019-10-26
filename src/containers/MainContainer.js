@@ -6,6 +6,8 @@ import Search from '../components/Search'
 import PizzaContainer from './PizzaContainer'
 import NewPizzaPlace from '../components/NewPizzaPlace'
 import Reviews from '../components/Reviews'
+import Button from '@material-ui/core/Button';
+
 // import PizzaDetail from '../components/PizzaDetail'
 
 class MainContainer extends Component {
@@ -17,8 +19,10 @@ state = {
   lat: 40.700885000,
   pizzaplaces: [],
   users: [],
+  allReviews: [],
   showNewPizzaForm: false,
   searchTerm: "",
+  viewDetailsClick: false
 }
 
 componentDidMount(){
@@ -37,6 +41,14 @@ componentDidMount(){
     })
   })
  )
+ .then(fetch('http://localhost:3000/reviews')
+  .then( resp => resp.json())
+  .then( reviews => {
+    this.setState({
+      allReviews: reviews
+    })
+    })
+  );
 }
 
 handleLoginButton = (name) => {
@@ -60,9 +72,26 @@ handlePizzaClick = (event) => { //handle side pizza clicks
       clicked: true,
       lat: event.lat,
       long: event.long,
-      // pizzaplaces: onlyPizza
     })
 }
+
+viewDetailsClick = (pizzaplace) => {
+  let reviews = []
+  for (let placeId of this.state.allReviews) {
+    for (let user of this.state.users) {
+      if(user.id === placeId.user_id) {
+        placeId.username = user.username
+      }
+    }
+    if(placeId.pizzaplace_id === pizzaplace.id){
+      reviews.push(placeId)
+    }
+  }
+  this.setState({
+    viewDetailsClick: !this.state.viewDetailsClick,
+    allReviews: reviews
+  })
+};
 
 handleChange = (event) => {
 event.preventDefault() // handle search form input
@@ -105,7 +134,8 @@ handleNameInput = (event) => { // handle login input
 }
 
 render() {
-  console.log(this.state.pizzaplaces)
+const newArray = this.state.pizzaplaces.filter(pizzaplace => pizzaplace.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+console.log(this.state.allReviews, this.state.users)
   return (
      <div style={{ textAlign: 'center', postition: 'center'}}>
        <h1>Welcome To Dollar Pizza Finder!</h1>
@@ -121,16 +151,12 @@ render() {
               :
               <div><Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.addNewPizza}/>
               <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
-              <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
-              {
-                this.state.pizzaplaces.length === 1 ?
-                <div>
-                 <PizzaContainer searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
-                 <Reviews />
-                </div>
-                :
-                null
-              }
+            {
+                this.state.viewDetailsClick ?
+              <Reviews user={this.state.username} pizzaplaces={this.state.pizzaplaces} reviews={this.state.allReviews}/>
+              :
+              <PizzaContainer viewDetailsClick={this.viewDetailsClick} searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
+            }
               </div>
             }
           </div>
