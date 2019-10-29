@@ -1,6 +1,5 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -49,7 +48,9 @@ class Reviews extends React.Component {
     pizzaplace: this.props.pizzaplaces,
     clickedAddReview: false,
     rating: "",
-    newReview: ""
+    newReview: "",
+    user: this.props.user,
+    duplicateReview: false,
   }
 
   addReview = () => {
@@ -65,44 +66,82 @@ class Reviews extends React.Component {
   })
   }
 
-  submitReview = (event) => {
-    event.preventDefault()
-    console.log("YURRR")
-  }
+  // submitReview = (event) => {
+  //   event.preventDefault()
+  // }
 
   handleChange = (event) => {
     this.setState({
       [event.target.name] : event.target.value
     })
   }
-  handleSubmit = (event) => {
+
+submitReview = (event) => {
     event.preventDefault()
-    fetch(`http://localhost:3000/reviews/${this.state.id}`, {
-      method: "PATCH",
-      headers: {
-        "Accept":"application/json",
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({
-        content: this.state.review
+    let placeReview;
+    let foundReview = 0
+    for (let review of this.props.reviews) {
+      if(review.user_id === this.props.user.id) {
+        // placeReview = review
+        foundReview++
+        alert('Cannot Review Again')
+      }
+    }
+    console.log(foundReview)
+    if(foundReview === 0) {
+      fetch(`http://localhost:3000/reviews/`, {
+        method: "POST",
+        headers: {
+          "Accept":"application/json",
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+          content: this.state.newReview,
+          rating: this.state.rating,
+          pizzaplace_id: this.props.pizzaid,
+          user_id: this.props.user.id
+        })
       })
-    })
-    .then(fetch('http://localhost:3000/reviews')
-    .then(res => res.json())
-    .then(reviews => {
-      this.setState({
-        reviews: reviews
-      })
-    }))
+      .then(res => res.json())
+      .then(response => {
+        if(response.error){
+          alert(response.error)
+        }
+        console.log("SUBMITTING INFO")
+        this.props.homePage(response)
+       }
+      )
+    }
+    // fetch(`http://localhost:3000/reviews/`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Accept":"application/json",
+    //     "Content-Type":"application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     content: this.state.newReview,
+    //     rating: this.state.rating,
+    //     pizzaplace_id: this.props.pizzaid,
+    //     user_id: this.props.user.id
+    //   })
+    // })
+    // .then(res => res.json())
+    // .then(response => {
+    //   console.log("SUBMITTING INFO")
+    //   this.props.homePage(response)
+    //  }
+    // )
   }
 
 
 render(){
-  console.log(this.state.rating, this.state.newReview)
+  console.log(this.state)
  return (
    <List style={{ width: '49%', float: 'right' }} className={"nothing"}>
-     { this.state.clickedAddReview ? <h1>HELLO</h1> :
+     { this.state.clickedAddReview ? null
+                   :
        this.props.reviews.map(review => {
+
          return <ListItem key={review.id} alignItems="flex-start">
           <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="https://cdn.dribbble.com/users/39185/screenshots/2741760/pi2zza.jpg" />
@@ -120,21 +159,21 @@ render(){
                             className={"nthing"}
                             color="textPrimary"
                             >
-                           {`${review.username}`}
+                          {`${review.username}`}
                           </Typography>
                           {` - ${review.content}`}
                           </React.Fragment>
-                        }
-                        />
-          </ListItem>
-        }
-      )}
-
-      {this.state.clickedAddReview ?
-  <div>
+                            }
+                            />
+                            </ListItem>
+              }
+            )}
+    {this.state.clickedAddReview ?
+    <div>
         <TextField
    select
    name={"rating"}
+   value={this.state.rating}
    onChange={(event) => this.handleChange(event)}
    InputProps={{
      startAdornment: (
@@ -153,19 +192,35 @@ render(){
    <Input
      name={"newReview"}
      onChange={(event) => this.handleChange(event)}
-     startAdornment={<InputAdornment position="start"></InputAdornment>}
    />
  </FormControl>
+ <Button style={{ float: 'center' }} onClick={this.submitReview}variant="contained" color="primary">
+   Submit
+ </Button>
+ <Button style={{ float: 'center' }} onClick={this.addReview}variant="contained" color="primary">
+   Cancel
+ </Button>
 </div>
  :
 
               this.props.reviews.length === 0 ?
+              <div>
+              <Button style={{ float: 'center' }}  onClick={this.props.viewAllPlaces} variant="contained" color="primary">
+                Back to home page
+              </Button>
                 <Button style={{ float: 'right' }} onClick={this.addReview}variant="contained" color="primary">
                   Be the first to review this place!
-                </Button> :
+                </Button>
+                </div> :
+                <div>
                 <Button style={{ float: 'right' }} onClick={this.addReview}variant="contained" color="primary">
                   Add Review
                 </Button>
+                <Button style={{ float: 'center' }}  onClick={this.props.viewAllPlaces} variant="contained" color="primary">
+                  Back to home page
+                </Button>
+              </div>
+
 
       }
 

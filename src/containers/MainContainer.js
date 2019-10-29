@@ -6,15 +6,15 @@ import Search from '../components/Search'
 import PizzaContainer from './PizzaContainer'
 import NewPizzaPlace from '../components/NewPizzaPlace'
 import Reviews from '../components/Reviews'
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
 // import PizzaDetail from '../components/PizzaDetail'
 
 class MainContainer extends Component {
 
 state = {
-  loggedIn: true,
-  username: "",
+  loggedIn: false,
+  user: "",
   long: -73.987448000,
   lat: 40.700885000,
   pizzaplaces: [],
@@ -22,7 +22,10 @@ state = {
   allReviews: [],
   showNewPizzaForm: false,
   searchTerm: "",
-  viewDetailsClick: false
+  viewDetailsClick: false,
+  pizzaPlaceId: null,
+  currentUser: null,
+  pizzaPlaceReview: []
 }
 
 componentDidMount(){
@@ -59,6 +62,7 @@ handleLoginButton = (name) => {
         if (user.username === name) {
           this.setState({
             username: user.username,
+            currentUser: user,
             loggedIn: true
           })
         }
@@ -75,23 +79,53 @@ handlePizzaClick = (event) => { //handle side pizza clicks
     })
 }
 
+
+  viewAllPlaces = () => {
+    this.setState({
+      viewDetailsClick:!this.state.viewDetailsClick
+    })
+  }
+
 viewDetailsClick = (pizzaplace) => {
   let reviews = []
-  for (let placeId of this.state.allReviews) {
-    for (let user of this.state.users) {
-      if(user.id === placeId.user_id) {
-        placeId.username = user.username
+  let allReviews = [...this.state.allReviews]
+  if(pizzaplace.content) {
+    this.setState({
+      allReviews: [...this.state.allReviews, pizzaplace],
+      viewDetailsClick: !this.state.viewDetailsClick,
+
+    })
+  }
+
+  if(pizzaplace.address) {
+    for (let reviewObj of allReviews) {
+      for (let user of this.state.users) {
+        if(user.id === reviewObj.user_id) {
+          reviewObj.username = user.username
+        }
+      }
+      if(reviewObj.pizzaplace_id === pizzaplace.id){
+        reviews.push(reviewObj)
       }
     }
-    if(placeId.pizzaplace_id === pizzaplace.id){
-      reviews.push(placeId)
-    }
+    this.setState({
+      viewDetailsClick: !this.state.viewDetailsClick,
+      pizzaPlaceReview: reviews,
+      pizzaPlaceId: pizzaplace.id
+    })
   }
-  this.setState({
-    viewDetailsClick: !this.state.viewDetailsClick,
-    allReviews: reviews
-  })
 };
+
+
+    // fetch('http://localhost:3000/reviews')
+    // .then( resp => resp.json())
+    // .then( reviews => {
+    //   this.setState({
+    //     allReviews : reviews
+    //   })
+    // })
+
+
 
 handleChange = (event) => {
 event.preventDefault() // handle search form input
@@ -134,8 +168,8 @@ handleNameInput = (event) => { // handle login input
 }
 
 render() {
-const newArray = this.state.pizzaplaces.filter(pizzaplace => pizzaplace.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
-console.log(this.state.allReviews, this.state.users)
+// const newArray = this.state.pizzaplaces.filter(pizzaplace => pizzaplace.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+// console.log(this.state.allReviews)
   return (
      <div style={{ textAlign: 'center', postition: 'center'}}>
        <h1>Welcome To Dollar Pizza Finder!</h1>
@@ -153,7 +187,7 @@ console.log(this.state.allReviews, this.state.users)
               <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
             {
                 this.state.viewDetailsClick ?
-              <Reviews user={this.state.username} pizzaplaces={this.state.pizzaplaces} reviews={this.state.allReviews}/>
+              <Reviews viewAllPlaces={this.viewAllPlaces} homePage={this.viewDetailsClick} user={this.state.currentUser}pizzaid={this.state.pizzaPlaceId} allUsers={this.state.users} pizzaplaces={this.state.pizzaplaces} reviews={this.state.pizzaPlaceReview}/>
               :
               <PizzaContainer viewDetailsClick={this.viewDetailsClick} searchTerm={this.state.searchTerm} pizzaplaces={this.state.pizzaplaces} handlePizzaClick={this.handlePizzaClick} />
             }

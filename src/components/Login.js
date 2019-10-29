@@ -55,7 +55,6 @@ import Button from '@material-ui/core/Button';
   }
 
 render() {
-  console.log(this.state.username)
   return (
     <div>
       <FormControl >

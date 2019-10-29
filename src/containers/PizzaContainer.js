@@ -22,7 +22,6 @@ export default function PizzaContainer(props) {
 const classes = useStyles();
 const selectedPizzaPlace = props.pizzaplaces.filter(p =>
     p.name.toLowerCase().includes(props.searchTerm));
-
   return (
 
 
