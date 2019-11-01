@@ -105,32 +105,15 @@ submitReview = (event) => {
       .then(res => res.json())
       .then(response => {
         if(response.error){
+          debugger;
           alert(response.error)
         }
+        debugger;
         console.log("SUBMITTING INFO")
         this.props.homePage(response)
        }
       )
     }
-    // fetch(`http://localhost:3000/reviews/`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Accept":"application/json",
-    //     "Content-Type":"application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     content: this.state.newReview,
-    //     rating: this.state.rating,
-    //     pizzaplace_id: this.props.pizzaid,
-    //     user_id: this.props.user.id
-    //   })
-    // })
-    // .then(res => res.json())
-    // .then(response => {
-    //   console.log("SUBMITTING INFO")
-    //   this.props.homePage(response)
-    //  }
-    // )
   }
 
 

@@ -48,7 +48,8 @@ import Button from '@material-ui/core/Button';
       if(resp.errors) {
         alert(resp.errors)
       } else {
-        alert('Succesfully registered!')
+        alert('Succesfulyl Registered!')
+        this.props.handleLoginSignUp()
         }
       })
     }

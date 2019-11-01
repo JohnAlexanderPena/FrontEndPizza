@@ -20,6 +20,7 @@ handleChange = (event) => {
   })
 }
 
+
 handleSubmit = (event) => {
 event.preventDefault();
   let resp = this.state.address.split(" ").join("+")
@@ -41,8 +42,12 @@ event.preventDefault();
         lat: response.results[0].geometry.location.lat,
         })
       })
+      .then(res => res.json())
+        .then(response => {
+          this.props.pushPizza(response)
+         }
+        )
     })
-    .then(this.props.cancelForm)
 }
 
 

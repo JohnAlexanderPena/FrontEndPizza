@@ -70,6 +70,12 @@ handleLoginButton = (name) => {
     }
   }
 
+  handleLoginSignUp = () => {
+    this.setState({
+      loggedIn: true
+    })
+  }
+
 handlePizzaClick = (event) => { //handle side pizza clicks
   this.setState({
       selectedPizzaPlace: event.name,
@@ -79,6 +85,13 @@ handlePizzaClick = (event) => { //handle side pizza clicks
     })
 }
 
+pushPizza = (response) => {
+  console.log("HIT RESPONSE")
+  this.setState({
+    pizzaplaces: [...this.state.pizzaplaces, response],
+    showNewPizzaForm: !this.state.showNewPizzaForm
+  })
+}
 
   viewAllPlaces = () => {
     this.setState({
@@ -116,17 +129,6 @@ viewDetailsClick = (pizzaplace) => {
   }
 };
 
-
-    // fetch('http://localhost:3000/reviews')
-    // .then( resp => resp.json())
-    // .then( reviews => {
-    //   this.setState({
-    //     allReviews : reviews
-    //   })
-    // })
-
-
-
 handleChange = (event) => {
 event.preventDefault() // handle search form input
 
@@ -139,7 +141,7 @@ for(let place of this.state.pizzaplaces) {
   if (place.name.includes(newPlace[0].name)) {
     this.setState({
       pizzaplaces: [place],
-      searchTerm: event.target.value,
+      searchTerm: event.target.value.toLowerCase(),
       lat: place.lat,
       lng: place.long
     });
@@ -147,12 +149,13 @@ for(let place of this.state.pizzaplaces) {
   else {
     this.setState({
       pizzaplaces: originalPlaces,
-      searchTerm: event.target.value
+      searchTerm: event.target.value.toLowerCase()
         })
       }
     };
   }
 }
+
 
 addNewPizza = () => {
   this.setState({
@@ -176,12 +179,12 @@ render() {
       {
         (this.state.loggedIn === false) ?
         <div >
-          <Login LoginButton={this.handleLoginButton} handleNameInput={this.handleNameInput} />
+          <Login LoginButton={this.handleLoginButton} handleLoginSignUp={this.handleLoginSignUp} handleNameInput={this.handleNameInput} />
         </div>
           :
           <div>
             { this.state.showNewPizzaForm ?
-              <NewPizzaPlace cancelForm={this.addNewPizza}/>
+              <NewPizzaPlace pushPizza={this.pushPizza} cancelForm={this.addNewPizza}/>
               :
               <div><Search searchTerm={this.state.searchTerm} handleChange={this.handleChange} handleSearch={this.addNewPizza}/>
               <GoogleMap searchTerm={this.state.searchTerm} long={this.state.long} pizzaplaces={this.state.pizzaplaces} chosenPizza={this.state.selectedPizzaPlace} lat={this.state.lat}/>
