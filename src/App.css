@@ -5,11 +5,11 @@
 
 
 body {
-  background-color: #304ffe;
+  background-color: #55BCC9;
 }
 
 li {
-  background-color: #0066ff;
+  background-color: #E8A87C;
   font-family: verdana;
   border: 1px solid;
   border-color: "black";
@@ -19,7 +19,16 @@ li {
 
 .reviews {
   float:"right";
-  background: '#0130A0';
+  background: '#E8A87C';
+}
+
+.h3 {
+  color: #EDF5E1;
+  border-color: "black";
+}
+
+.Header {
+  color: #EDF5E1;
 }
 /*
 .pizzacontainer {
@@ -37,6 +46,8 @@ li {
     background-color: red;
     height: 30px;
 }
+
+
 
 #container {
     width: 300px;

@@ -175,7 +175,7 @@ render() {
 // console.log(this.state.allReviews)
   return (
      <div style={{ textAlign: 'center', postition: 'center'}}>
-       <h1>Welcome To Dollar Pizza Finder!</h1>
+       <h1 className="Header">Welcome To Dollar Pizza Finder!</h1>
       {
         (this.state.loggedIn === false) ?
         <div >

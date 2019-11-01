@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme => ({
     float:"right",
     width: '49%',
     height: '50%',
-    background: '#0130A0',
-    backgroundColor: '#bbdefb',
+    background: '#C38D9E',
+    backgroundColor: '#E8A87C',
   },
 }));
 
@@ -29,8 +29,9 @@ const selectedPizzaPlace = props.pizzaplaces.filter(p =>
         {selectedPizzaPlace.map((pizzaplace, index) => {
           return <ListItem button key={index + pizzaplace}>
           <ListItemText onClick={(event) => props.handlePizzaClick(pizzaplace) } primary={`${pizzaplace.name} located at:  ${pizzaplace.address}`} />
-            <Button onClick={() => props.viewDetailsClick(pizzaplace) }variant="contained" color="primary">
-              View Details
+            <Button onClick={() => props.viewDetailsClick(pizzaplace) }
+              color="primary" aria-label="outlined primary button group">
+              View Reviews
             </Button>
         </ListItem> })}
     </div>
